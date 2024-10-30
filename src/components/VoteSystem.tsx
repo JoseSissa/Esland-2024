@@ -12,6 +12,8 @@ interface Candidate {
 
 type typeVotes = Array<Array<number>>;
 
+const { signOut } = await import("auth-astro/client")
+
 const MAX_CATEGORY = 12;
 const MAX_VOTES_CATEGORY = 4
 
@@ -99,6 +101,9 @@ export function VoteSystem() {
                 Categoría {category + 1} / {MAX_CATEGORY}
                 <button onClick={() => handleNavigation(category + 1)}>
                     <Arrow />
+                </button>
+                <button onClick={() => signOut()}>
+                    Cerrar sesion
                 </button>
             </footer>
         </div>

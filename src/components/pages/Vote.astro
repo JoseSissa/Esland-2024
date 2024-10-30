@@ -96,9 +96,7 @@ console.log(bkg);
         .getElementById("vote-button")
         ?.addEventListener("click", async (e) => {
             e.preventDefault();
-            await signIn("twitch", {
-                callbackUrl: "/Vota",
-            });
+            signIn()
         });
 </script>
 
