@@ -45,9 +45,10 @@ console.log(bkg);
                             {i18n.VOTE.CALL_TO_VOTE}
                         </Button>
                     </div>
-                    <p class="max-w-3xl text-pretty text-2xl px-2 mb-10">
-                        {i18n.VOTE.INTRO_CONTENT}
-                    </p>
+                    <p
+                        class="max-w-3xl text-pretty text-2xl px-2 mb-10"
+                        set:html={i18n.VOTE.INTRO_CONTENT}
+                    ></p>
 
                     <ul class="flex flex-col gap-y-10 text-2xl pl-4 font-extralight">
                         <li class="flex gap-x-6 items-center">
@@ -96,7 +97,7 @@ console.log(bkg);
         .getElementById("vote-button")
         ?.addEventListener("click", async (e) => {
             e.preventDefault();
-            signIn()
+            signIn();
         });
 </script>
 

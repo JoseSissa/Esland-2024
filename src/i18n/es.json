@@ -14,8 +14,8 @@
 		"LEGAL_NOTICE_DESCRIPTION": "El aviso legal establece las disposiciones legales y las responsabilidades relacionadas con los Premios ESLAND, abordando aspectos como términos de uso, responsabilidades legales y acuerdos entre el usuario y la entidad responsable",
 		"PRIVACY_POLICY_TITLE": "Política de privacidad - Premios ESLAND",
 		"PRIVACY_POLICY_DESCRIPTION": "La Política de Privacidad de los Premios ESLAND describe cómo se recopilan, utilizan, protegen y comparten los datos personales de los usuarios",
-		"COOKIES_TITLE":"Política de cookies - Premios ESLAND",
-		"COOKIES_DESCRIPTION":"La Política de Cookies de los Premios ESLAND informa sobre el uso de cookies y tecnologías similares en el sitio web",
+		"COOKIES_TITLE": "Política de cookies - Premios ESLAND",
+		"COOKIES_DESCRIPTION": "La Política de Cookies de los Premios ESLAND informa sobre el uso de cookies y tecnologías similares en el sitio web",
 		"ERROR_404_TITLE": "404 Página no encontrada - Premios ESLAND",
 		"ERROR_404_DESCRIPTION": "Página no encontrada (Error 404). Verifica la URL o explora nuestras secciones. ¿Necesitas ayuda? Contáctenos."
 	},
@@ -23,7 +23,7 @@
 		"LOGO": "Volver a la página de inicio de los Premios ESLAND"
 	},
 	"HEADER_VOTE": "VOTA",
-	"HEADER_INFO": "INFO",
+	"HEADER_INFO": "INFORMACIÓN",
 	"HEADER_ARCHIVE": "ARCHIVO",
 	"HEADER_BUTTON": "CRITERIOS DE NOMINACIÓN",
 	"HERO_SUBTITLE": "Premios a la Comunidad Hispanohablante de Streaming",
@@ -299,7 +299,7 @@
 	},
 	"AWARDS": {
 		"TITLE": "PALMARÉS",
-		"NOT_FOUND" : "Edición no encontrada"
+		"NOT_FOUND": "Edición no encontrada"
 	},
 	"GALLERY": {
 		"TITLE": "GALERÍA",
