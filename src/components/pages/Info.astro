@@ -1,0 +1,15 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import HeroContainer from '../HeroContainer.astro';
+
+// Internacionalización
+import { geti18n } from '@/i18n';
+const { currentLocale } = Astro
+const i18n = geti18n({ currentLocale })
+---
+
+<Layout	title={i18n.SEO.INFO_TITLE} description={i18n.SEO.INFO_DESCRIPTION_1}>
+    <HeroContainer img='/images/background/info-background.webp'>
+        
+    </HeroContainer>
+</Layout>

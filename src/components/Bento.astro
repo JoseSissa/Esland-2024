@@ -1,0 +1,79 @@
+---
+import BentoItem from "./BentoItem.astro";
+
+// Internacionalización
+import { geti18n } from "@/i18n";
+const { currentLocale } = Astro;
+const i18n = geti18n({ currentLocale });
+---
+
+<section
+    class={`
+        w-full max-w-[1400px]
+        grid grid-cols-10 auto-rows-[30rem] gap-4
+        mx-auto px-5 lg:p-20
+    `}
+>
+    <BentoItem class="col-span-10 md:col-span-4" title={i18n.BENTO_TITLE_1}>
+        <div
+            slot="image"
+            class="background-one bg-blue-950 ease-in-out group-hover:scale-110"
+            style="background-image: url('/images/bento-grid/mountain.webp')"
+        >
+        </div>
+        <p slot="content" class="max-w-3xl" set:html={i18n.BENTO_CONTENT_1} />
+    </BentoItem>
+
+    <BentoItem
+        class="col-span-10 md:col-span-6"
+        title={i18n.BENTO_TITLE_2}
+        subtitle={i18n.BENTO_SUBTITLE_2}
+    >
+        <div
+            slot="image"
+            class="background-one bg-blue-500 ease-in-out group-hover:scale-110"
+            style="background-image: url('/images/bento-grid/grefg.webp')"
+        >
+        </div>
+    </BentoItem>
+    <BentoItem
+        class="col-span-10 md:col-span-6"
+        title={i18n.BENTO_TITLE_3}
+        subtitle={i18n.BENTO_SUBTITLE_3}
+    >
+        <div
+            slot="image"
+            class="background-one bg-blue-500 ease-in-out group-hover:scale-110"
+            style="background-image: url('/images/bento-grid/pistas.webp')"
+        >
+        </div>
+    </BentoItem>
+    <BentoItem class="col-span-10 md:col-span-4" title={i18n.BENTO_TITLE_4}>
+        <div
+            slot="image"
+            class="background-one bg-blue-950 ease-in-out group-hover:scale-110"
+            style="background-image: url('/images/bento-grid/laptop.webp')"
+        >
+        </div>
+    </BentoItem>
+</section>
+
+<style>
+    .background-one {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        object-fit: cover;
+        object-position: center;
+        z-index: 0;
+        opacity: 0.9;
+        background-blend-mode: luminosity;
+        transition-duration: 1000ms;
+    }
+</style>

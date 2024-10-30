@@ -1,0 +1,43 @@
+---
+import Logo from "./icons/Logo.astro";
+import Button from "@/components/Button.astro";
+
+// Internacionalización
+import { geti18n } from "@/i18n";
+const { currentLocale } = Astro;
+const i18n = geti18n({ currentLocale });
+---
+
+<header id="header-nav" class="fixed top-0 w-full py-4 px-8 lg:px-0 z-20">
+    <div
+        class="flex justify-between items-center w-full max-w-[1400px] mx-auto lg:px-20"
+    >
+        <a href="/" class="lg:w-1/4">
+            <Logo class="w-12" />
+        </a>
+        <nav class="justify-self-center w-2/4">
+            <ul class="flex justify-center items-center gap-4">
+                <li>
+                    <a class="hover:underline" href="/info"
+                        >{i18n.HEADER_INFO}</a
+                    >
+                </li>
+                <li>
+                    <a class="hover:underline" href="/archivo"
+                        >{i18n.HEADER_ARCHIVE}</a
+                    >
+                </li>
+                <li>
+                    <a class="hover:underline" href="/vota"
+                        >{i18n.HEADER_VOTE}</a
+                    >
+                </li>
+            </ul>
+        </nav>
+        <div class="lg:w-1/4 text-end">
+            <Button id="" styles="" href="#">
+                {i18n.HEADER_BUTTON}
+            </Button>
+        </div>
+    </div>
+</header>

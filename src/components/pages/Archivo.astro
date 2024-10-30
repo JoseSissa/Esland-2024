@@ -1,0 +1,29 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import HeroContainer from '@/components/HeroContainer.astro';
+import Button from '@/components/Button.astro'
+import Numbers from '@/components/Numbers.astro';
+
+// Internacionalización
+import { geti18n } from '@/i18n';
+import Gallery from '../Gallery.astro';
+const { currentLocale } = Astro
+const i18n = geti18n({ currentLocale })
+---
+
+<Layout	title={i18n.SEO.ARCHIVO_TITLE} description={i18n.SEO.ARCHIVO_DESCRIPTION}>
+    <HeroContainer img='/images/background/archivo-background.webp'>
+        <h1 class="mb-20 text-4xl lg:text-6xl font-medium font-tomaso tracking-widest uppercase text-center">
+            {i18n.ARCHIVO.HERO_TITLE}
+        </h1>
+        <Button styles='text-xs md:text-xl lg:text-2xl' href='#' id="">
+            {i18n.ARCHIVO.HERO_BUTTON}
+        </Button>
+
+    </HeroContainer>
+
+    <main>
+        <Gallery />
+        <Numbers />
+    </main>
+</Layout>

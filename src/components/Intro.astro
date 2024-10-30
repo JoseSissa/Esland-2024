@@ -1,0 +1,20 @@
+---
+import Logo from "./icons/Logo.astro";
+
+// Internacionalización
+import { geti18n } from '@/i18n';
+const { currentLocale } = Astro
+const i18n = geti18n({ currentLocale })
+---
+
+<section class="max-w-[60ch] mx-auto my-24 px-5 lg:px-20 text-xl text-left text-pretty">
+    <Logo 
+        class="w-16 mb-10 mx-auto text-white"
+    />
+    <h1 class="mx-auto mb-10 text-center text-4xl font-semibold text-wrap tracking-wide">
+        {i18n.INTRO_TITLE} <br /> {i18n.INTRO_TITLE_AFTER_BR}
+    </h1>
+    <p set:html={i18n.INTRO_DESCRIPTION_1}></p>
+    <p set:html={i18n.INTRO_DESCRIPTION_2}></p>
+    <p set:html={i18n.INTRO_DESCRIPTION_3}></p>
+</section>

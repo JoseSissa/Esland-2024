@@ -1,0 +1,20 @@
+---
+// Internacionalización
+import { geti18n } from '@/i18n';
+const { currentLocale } = Astro
+const i18n = geti18n({ currentLocale })
+---
+
+<section class="w-full max-w-[1400px] mx-auto px-5 py-12 lg:p-20 ">
+    <h3 class="mx-auto text-4xl tracking-wide text-center uppercase font-semibold mb-10 text-balance">Guía de la 3ra edición de los premios ESLAND</h3>
+
+    <lite-youtube
+        class="shadow-2xl shadow-white/10 rounded-xl"
+        videoid="nYPVr2IYTtk"
+        videotitle={i18n.PREFOOTER_VIDEO_TITLE}
+    ></lite-youtube>
+</section>
+
+<script>
+    import '@justinribeiro/lite-youtube';
+</script>

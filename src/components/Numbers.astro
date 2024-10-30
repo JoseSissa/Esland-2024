@@ -1,0 +1,46 @@
+---
+import { CountUp } from '@/components/CountUp'
+
+// Internacionalización
+import { geti18n } from '@/i18n';
+const { currentLocale } = Astro
+const i18n = geti18n({ currentLocale })
+---
+
+<section class="max-w-6xl mx-auto px-10  py-20 lg:px-20">
+    <h2 class="mb-10 lg:mb-20 text-4xl lg:text-6xl font-tomaso text-center text-balance">
+        {i18n.ARCHIVO.COUNTER_TITLE}
+    </h2>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-y-10">
+        <div class="flex flex-col justify-center items-center">
+            <span class="text-7xl font-bold tabular-nums tracking-tighter numberShadow">
+                <CountUp client:visible initial={1} final={69.9} decimals={1} />M
+            </span>
+            <span class="uppercase opacity-70">
+                {i18n.ARCHIVO.COUNTER_VIEWS}
+            </span>
+        </div>
+        <div class="flex flex-col justify-center items-center">
+            <span class="text-7xl font-bold tabular-nums tracking-tighter numberShadow">
+                <CountUp client:visible initial={1} final={227} />
+            </span>
+            <span class="uppercase opacity-70">
+                {i18n.ARCHIVO.COUNTER_NEWS}
+            </span>
+        </div>
+        <div class="flex flex-col justify-center items-center">
+            <span class="text-7xl font-bold tabular-nums tracking-tighter numberShadow">
+                <CountUp client:visible initial={1} final={3.2} decimals={1} />M€
+            </span>
+            <span class="uppercase opacity-70">
+                {i18n.ARCHIVO.COUNTER_NEWS}
+            </span>
+        </div>
+    </div>
+</section>
+
+<style>
+    .numberShadow {
+        text-shadow: 0 0 10px rgb(200 255 255 / .5);
+    }
+ </style>
