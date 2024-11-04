@@ -1,36 +1,66 @@
 ---
+import {
+    getLangFromUrl,
+    useTranslations,
+    getRouteOfLanguage,
+} from "@/i18n/utils";
+
 import Logo from "./icons/Logo.astro";
 import Button from "@/components/Button.astro";
+import LaguageSelector from "@/components/LaguageSelector.astro";
 
 // Internacionalización
 import { geti18n } from "@/i18n";
 const { currentLocale } = Astro;
 const i18n = geti18n({ currentLocale });
+
+const path = Astro.url.pathname;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <header id="header-nav" class="fixed top-0 w-full py-4 px-8 lg:px-0 z-20">
     <div
         class="flex justify-between items-center w-full max-w-[1400px] mx-auto lg:px-20"
     >
-        <a href="/" class="lg:w-1/4">
+        <a href={getRouteOfLanguage(lang, "nav.inicio")} class="lg:w-1/4">
             <Logo class="w-12" />
         </a>
         <nav class="justify-self-center w-2/4">
             <ul class="flex justify-center items-center gap-4">
                 <li>
-                    <a class="hover:underline" href="/info"
-                        >{i18n.HEADER_INFO}</a
+                    <a
+                        class:list={[
+                            "inline-block px-1 text-xl text__glowing uppercase",
+                            path === "/info" && "border-b",
+                        ]}
+                        href={getRouteOfLanguage(lang, "nav.info")}
+                        >{t("nav.info")}</a
                     >
                 </li>
                 <li>
-                    <a class="hover:underline" href="/archivo"
-                        >{i18n.HEADER_ARCHIVE}</a
+                    <a
+                        class:list={[
+                            "inline-block px-1 text-xl text__glowing uppercase",
+                            path === "/archivo" && "border-b",
+                        ]}
+                        href={getRouteOfLanguage(lang, "nav.archivo")}
+                        >{t("nav.archivo")}</a
                     >
                 </li>
                 <li>
-                    <a class="hover:underline" href="/vota"
-                        >{i18n.HEADER_VOTE}</a
+                    <a
+                        class:list={[
+                            "inline-block px-1 text-xl text__glowing uppercase",
+                            path === "/vota" && "border-b",
+                        ]}
+                        href={getRouteOfLanguage(lang, "nav.vota")}
+                        >{t("nav.vota")}</a
                     >
+                </li>
+                <li>
+                    <button></button>
                 </li>
             </ul>
         </nav>
@@ -39,5 +69,16 @@ const i18n = geti18n({ currentLocale });
                 {i18n.HEADER_BUTTON}
             </Button>
         </div>
+        <LaguageSelector />
     </div>
 </header>
+
+<style>
+    .text__glowing {
+        transition: text-shadow 0.3s ease;
+    }
+
+    .text__glowing:hover {
+        text-shadow: 1px 1px 20px #fff;
+    }
+</style>
