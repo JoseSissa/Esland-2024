@@ -19,18 +19,42 @@ const getHref = (key: LanguageKeyUi) =>
     route ? translateRoute(key, lang, route) : ui[key]["nav.inicio"];
 ---
 
-<div>
-    <button>
+<div class="group relative -right-20 w-32">
+    <button
+        class="w-32 px-2 py-1 mb-1 inline-flex justify-start items-center gap-2 rounded bg-black/70"
+        aria-expanded="true"
+        aria-haspopup="true"
+    >
         <currentLocaleData.flag />
         {currentLocaleData.name}
+        <svg
+            class="-mr-1 h-5 w-5 text-white group-hover:rotate-180 transition-all duration-200"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+            data-astro-source-file="D:/Personal_Projects/midu/esland-web/src/components/icons/Chevron.astro"
+            data-astro-source-loc="6:2"
+        >
+            <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"
+                data-astro-source-file="D:/Personal_Projects/midu/esland-web/src/components/icons/Chevron.astro"
+                data-astro-source-loc="7:4"></path>
+        </svg>
     </button>
-    <ul>
+    <ul
+        class="w-32 hidden absolute group-hover:block group-hover:animate-zoom-in group-hover:animate-duration-200 group-hover:animate-ease-in-out"
+    >
         {
             Object.entries(languages).map(([key, value], i) => {
                 if (key === lang) return;
                 return (
                     <li>
-                        <a href={getHref(key as LanguageKeyUi)}>
+                        <a
+                            class="flex justify-start items-center gap-2 px-2 py-1 mb-1 rounded bg-black/30 hover:bg-black/70"
+                            href={getHref(key as LanguageKeyUi)}
+                        >
                             <value.flag />
                             {value.name}
                         </a>
