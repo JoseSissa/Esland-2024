@@ -1,0 +1,42 @@
+---
+import { ui, languages } from "@/i18n/ui";
+import { getLangFromUrl, translateRoute } from "@/i18n/utils";
+import type { LanguageKeyUi, LanguageKeyRoutes } from "@/types/types";
+
+const lang: LanguageKeyRoutes = getLangFromUrl(Astro.url);
+const currentLocaleData = languages[lang];
+
+const pathname = Astro.url.pathname;
+
+let route = "";
+if (pathname.split("/").length === 3) {
+    [, , route] = pathname.split("/");
+} else if (pathname.split("/").length === 2) {
+    [, route] = pathname.split("/");
+}
+
+const getHref = (key: LanguageKeyUi) =>
+    route ? translateRoute(key, lang, route) : ui[key]["nav.inicio"];
+---
+
+<div>
+    <button>
+        <currentLocaleData.flag />
+        {currentLocaleData.name}
+    </button>
+    <ul>
+        {
+            Object.entries(languages).map(([key, value], i) => {
+                if (key === lang) return;
+                return (
+                    <li>
+                        <a href={getHref(key as LanguageKeyUi)}>
+                            <value.flag />
+                            {value.name}
+                        </a>
+                    </li>
+                );
+            })
+        }
+    </ul>
+</div>
