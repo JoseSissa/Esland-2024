@@ -8,9 +8,11 @@ import {
 import Logo from "./icons/Logo.astro";
 import Button from "@/components/Button.astro";
 import LaguageSelector from "@/components/LaguageSelector.astro";
+import HamburgerIcon from "@/components/HamburguerIcon.astro";
 
 // Internacionalización
 import { geti18n } from "@/i18n";
+import CloseMenu from "./CloseMenu.astro";
 const { currentLocale } = Astro;
 const i18n = geti18n({ currentLocale });
 
@@ -27,8 +29,20 @@ const t = useTranslations(lang);
         <a href={getRouteOfLanguage(lang, "nav.inicio")} class="lg:w-1/4">
             <Logo class="w-12" />
         </a>
-        <nav class="justify-self-center w-2/4">
-            <ul class="flex justify-center items-center gap-4">
+        <button class="block md:hidden" id="hamburger-menu">
+            <HamburgerIcon />
+        </button>
+        <nav
+            id="menu"
+            class="absolute top-0 left-0 w-screen h-screen flex justify-center items-center text-center bg-black/80 z-10 -translate-y-full
+            md:relative md:w-2/4 md:h-full md:bg-transparent transition-transform duration-300 ease-in-out"
+        >
+            <button class="absolute top-7 right-9 md:hidden" id="close-menu">
+                <CloseMenu />
+            </button>
+            <ul
+                class="flex flex-col md:flex-row justify-center items-center gap-4"
+            >
                 <li>
                     <a
                         class:list={[
@@ -60,16 +74,23 @@ const t = useTranslations(lang);
                     >
                 </li>
                 <li>
-                    <button></button>
+                    <div class="block md:hidden lg:w-1/4 text-end">
+                        <Button id="" styles="block" href="#">
+                            {i18n.HEADER_BUTTON}
+                        </Button>
+                    </div>
+                </li>
+                <li>
+                    <LaguageSelector class="block md:hidden right-0" />
                 </li>
             </ul>
         </nav>
-        <div class="lg:w-1/4 text-end">
+        <div class="hidden md:block lg:w-1/4 text-end">
             <Button id="" styles="" href="#">
                 {i18n.HEADER_BUTTON}
             </Button>
         </div>
-        <LaguageSelector />
+        <LaguageSelector class="hidden md:block" />
     </div>
 </header>
 
@@ -82,3 +103,20 @@ const t = useTranslations(lang);
         text-shadow: 1px 1px 20px #fff;
     }
 </style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const buttonHamburger = document.getElementById("hamburger-menu");
+        const closeMenu = document.getElementById("close-menu");
+        const menu = document.getElementById("menu");
+
+        const showHideMenu = () => menu?.classList.toggle("translate-y-0");
+
+        if (buttonHamburger) {
+            buttonHamburger.addEventListener("click", () => showHideMenu());
+        }
+        if (closeMenu) {
+            closeMenu.addEventListener("click", () => showHideMenu());
+        }
+    });
+</script>

@@ -3,6 +3,10 @@ import { ui, languages } from "@/i18n/ui";
 import { getLangFromUrl, translateRoute } from "@/i18n/utils";
 import type { LanguageKeyUi, LanguageKeyRoutes } from "@/types/types";
 
+interface Props {
+    class?: string;
+}
+
 const lang: LanguageKeyRoutes = getLangFromUrl(Astro.url);
 const currentLocaleData = languages[lang];
 
@@ -17,9 +21,11 @@ if (pathname.split("/").length === 3) {
 
 const getHref = (key: LanguageKeyUi) =>
     route ? translateRoute(key, lang, route) : ui[key]["nav.inicio"];
+
+const { class: className } = Astro.props;
 ---
 
-<div class="group relative -right-20 w-32">
+<div class:list={["group relative -right-20 w-32", className]}>
     <button
         class="w-32 px-2 py-1 mb-1 inline-flex justify-start items-center gap-2 rounded bg-black/70"
         aria-expanded="true"
