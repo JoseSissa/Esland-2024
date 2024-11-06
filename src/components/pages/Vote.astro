@@ -13,6 +13,9 @@ import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
 
+console.log(session);
+
+
 // Internacionalización
 import { geti18n } from "@/i18n";
 const { currentLocale } = Astro;
@@ -25,7 +28,7 @@ const bkg = session
 
 <Layout title={i18n.SEO.VOTE_TITLE} description={i18n.SEO.VOTE_DESCRIPTION}>
     <section
-        class="bg-no-repeat bg-cover relative pb-24 min-h-screen w-full max-w-[100vw]"
+        class="relative pb-24 min-h-screen w-full max-w-[100vw] bg-no-repeat bg-cover"
     >
         <img
             class="absolute h-full w-full animate-fade object-cover object-center animate-duration-1000 animate-ease-in-out -z-10"
@@ -85,7 +88,7 @@ const bkg = session
                 </div>
             )
         }
-        {session && <VoteSystem client:load />}
+        {session && <VoteSystem name={session.user?.name} image={session.user?.image} client:load />}
     </section>
 </Layout>
 
