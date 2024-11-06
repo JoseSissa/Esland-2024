@@ -21,7 +21,6 @@ const i18n = geti18n({ currentLocale });
 const bkg = session
     ? "/images/background/vote-system-bkg.webp"
     : "/images/background/vota-bkg.webp";
-console.log(bkg);
 ---
 
 <Layout title={i18n.SEO.VOTE_TITLE} description={i18n.SEO.VOTE_DESCRIPTION}>
@@ -48,7 +47,7 @@ console.log(bkg);
                     <p
                         class="max-w-3xl text-pretty text-2xl px-2 mb-10"
                         set:html={i18n.VOTE.INTRO_CONTENT}
-                    ></p>
+                    />
 
                     <ul class="flex flex-col gap-y-10 text-2xl pl-4 font-extralight">
                         <li class="flex gap-x-6 items-center">
