@@ -12,9 +12,8 @@ import { VoteSystem } from "@/components/VoteSystem.tsx";
 import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
-
-console.log(session);
-
+const nameSession = session?.user?.name ?? "";
+const imageSession = session?.user?.image ?? "";
 
 // Internacionalización
 import { geti18n } from "@/i18n";
@@ -88,7 +87,7 @@ const bkg = session
                 </div>
             )
         }
-        {session && <VoteSystem name={session.user?.name} image={session.user?.image} client:load />}
+        {session && <VoteSystem nameSession={nameSession} imageSession={imageSession} client:load />}
     </section>
 </Layout>
 
