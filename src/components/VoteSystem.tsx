@@ -4,15 +4,18 @@ import { MAX_CATEGORY, MAX_VOTES_CATEGORY } from "@/const/const";
 import { VoteFinal } from "./VoteFinal";
 import { type editionsVoteType } from "@/types/types";
 import { CameraLink } from "./CameraLink";
+import { UserSessionControl } from "./UserSessionControl.jsx";
+
 
 interface Props {
     nameSession: string;
     imageSession: string;
+    i18n: Record<string, string>;
 }
 
 const { signOut } = await import("auth-astro/client");
 
-export function VoteSystem({ nameSession, imageSession }: Props) {
+export function VoteSystem({ nameSession, imageSession, i18n }: Props) {
     const { votes, setVotes, pageInfo, category, setCategory, handlePagesNavigation } = useVoteSystem();
 
     const handleVote = ({ categoryName, candidato } : { categoryName: number; candidato: string; }) => {
@@ -62,32 +65,43 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
     }
 
     return (
-        <div class="relative w-full max-w-7xl h-screen mx-auto flex flex-col justify-center items-center">
-            <CategorySystem>{categoryName}</CategorySystem>
+        <div class="relative w-full max-w-7xl min-h-screen mx-auto flex flex-col justify-center items-center pt-28 px-3">
+            <CategorySystem>
+                {categoryName}
+            </CategorySystem>
             <div class="text-center text-xl font-bold mb-4">
-                Votos realizados: {votesCategory.length}/{MAX_VOTES_CATEGORY}
+                { i18n.votesCast } : { votesCategory.length}/{MAX_VOTES_CATEGORY }
             </div>
-            <ul class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-10">
+            <ul class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-10">
                 {candidatesPerPage?.map((candidato, i) => {
                     const { name, image, link, id } = candidato;
                     const voteIndex = votesCategory.indexOf(id);
                     const isVoted = voteIndex >= 0;
 
                     return (
-                        <li
-                            class={`${isVoted ? "bg-yellow-500" : "bg-blue-900"}
-                                    group relative text-center rounded-lg hover:bg-sky-400 transition-colors overflow-hidden`}
-                        >
-                            { candidato.link && <CameraLink link={candidato.link} /> }
+                        <li class={`group relative w-full max-w-80 mx-auto rounded-lg overflow-hidden`}>
+                            { 
+                                candidato.link && <CameraLink link={candidato.link} />
+                            }
                             <button
+                                class="w-full h-auto"
                                 onClick={() => handleVote({ categoryName: category, candidato: id, })}
                             >
                                 <img
-                                    class="rounded-t-lg group-hover:scale-110 transition-transform"
+                                    class={`
+                                            relative w-full h-[140px] object-cover rounded-t-lg group-hover:scale-110 group-hover:saturate-100 transition z-0
+                                            ${isVoted ? "brightness-105" : "saturate-50"}
+                                        `}
                                     src={`/images/voting-assets/${candidato.image}`}
                                     alt={candidato.name}
                                 />
-                                <p class="font-bold capitalize my-2">
+                                <p class=
+                                    {`
+                                        relative h-14 px-2 flex items-center rounded-b-lg text-left font-bold capitalize z-10 
+                                        ${isVoted ? "bg-yellow-500" : "bg-blue-900"} 
+                                        ${isVoted ? "" : "group-hover:bg-sky-600"}
+                                        transition-colors
+                                    `}>
                                     {candidato.name}
                                 </p>
                             </button>
@@ -95,18 +109,8 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
                     );
                 })}
             </ul>
-            <footer class="w-full p-2 flex justify-between items-center rounded bg-black/50">
-                <div class="flex items-center gap-2">
-                    <img
-                        src={imageSession}
-                        alt={nameSession}
-                        class="w-10 h-10 rounded-full"
-                    />
-                    <div>
-                        <span class="block">{nameSession}</span>
-                        <button onClick={() => signOut()}>Cerrar sesion</button>
-                    </div>
-                </div>
+            <footer class="w-full p-2 flex justify-between items-center flex-col-reverse md:flex-row gap-5 rounded bg-black/50">
+                <UserSessionControl signOut={signOut} imageSession={imageSession} nameSession={nameSession} textLogout={i18n.logout} />
                 <div>
                     <button
                         onClick={() => handlePagesNavigation(category - 1)}
@@ -115,7 +119,7 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
                         <Arrow rotate />
                     </button>
                     <span class="mx-4 font-bold text-xl">
-                        Categoría
+                        { i18n.category }
                         <span class="ml-4 text-2xl">
                             {category + 1} / {MAX_CATEGORY}
                         </span>
@@ -134,7 +138,7 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
 
 function CategorySystem({ children }: { children: string }) {
     return (
-        <h1 class="mb-20 text-4xl lg:text-6xl font-medium font-tomaso tracking-widest uppercase text-center">
+        <h1 class="mb-10 lg:mb-20 text-2xl lg:text-4xl font-medium font-tomaso tracking-widest uppercase text-center">
             {children}
         </h1>
     );

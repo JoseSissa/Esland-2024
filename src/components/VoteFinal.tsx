@@ -66,7 +66,7 @@ export const VoteFinal = (
     const isLoading = result === RESULT_STATUS.LOADING;
 
     return (
-        <section class="flex flex-col">
+        <section class="max-w-7xl mx-auto flex flex-col pt-28 px-3">
             {result === RESULT_STATUS.SUCCESS && (
                 <h1 class="pt-24 pb-10 mx-auto text-balance text-left text-3xl lg:text-5xl font-semibold tracking-wide">
                     Gracias por votar
@@ -84,15 +84,15 @@ export const VoteFinal = (
                     <div
                         class={`${
                             isLoading ? "opacity-50" : ""
-                        } transition grid grid-cols-2 md:grid-cols-6 gap-2 p-4`}
+                        } transition grid grid-cols-2 md:grid-cols-4 gap-4 p-4`}
                     >
                         {votes.map((categoryVotes, index) => {
                             return (
                                 <button
-                                    class="bg-[#1682c7] hover:scale-105 hover:bg-[#54beff] flex flex-col justify-between items-center"
+                                    class="group bg-[#1682c7] hover:bg-yellow-500 flex flex-col justify-between items-center rounded-lg overflow-hidden"
                                     onClick={() => setCategory(index)}
                                 >
-                                    <ul class="grid grid-cols-2">
+                                    <ul class="grid grid-cols-2 group-hover:hover:scale-105 transition-transform">
                                         {categoryVotes.map((candidate) => {
                                             const info = selectedCandidates?.[candidate];
                                             const image = info?.image ?? "";
@@ -109,7 +109,7 @@ export const VoteFinal = (
                                             );
                                         })}
                                     </ul>
-                                    <h2 class="text-lg font-semibold text-center my-auto text-balance">
+                                    <h2 class="text-base font-semibold text-center my-auto text-balance capitalize">
                                         {categoryNames[index]}
                                     </h2>
                                 </button>

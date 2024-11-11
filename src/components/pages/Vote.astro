@@ -36,7 +36,7 @@ const bkg = session
         />
         {
             !session && (
-                <div class="mx-auto flex flex-col max-w-7xl pt-40">
+                <div class="mx-auto flex flex-col max-w-7xl pt-28 px-3">
                     <h1 class="uppercase mb-10 text-left text-3xl lg:text-5xl font-bold tracking-wider leading-loose max-w-xl text-balance">
                         {i18n.VOTE.TITLE}
                     </h1>
@@ -87,7 +87,21 @@ const bkg = session
                 </div>
             )
         }
-        {session && <VoteSystem nameSession={nameSession} imageSession={imageSession} client:load />}
+        {
+            session && (
+                <VoteSystem
+                    nameSession={nameSession}
+                    imageSession={imageSession}
+                    i18n={
+                        {
+                            votesCast: i18n.VOTE.VOTES_CASTED,
+                            category: i18n.CATEGORY,
+                            logout: i18n.LOG_OUT
+                        }
+                    }
+                    client:load />
+            )
+        }
     </section>
 </Layout>
 
