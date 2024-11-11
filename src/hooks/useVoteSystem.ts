@@ -45,7 +45,6 @@ export const useVoteSystem = () => {
             // setVotes(dataProcessed);
 
             const newData = JSON.parse(localStorage.getItem("votesEsland"));
-            console.log(JSON.stringify(newData));
             setVotes(newData);
         }
         fetchVotes();
