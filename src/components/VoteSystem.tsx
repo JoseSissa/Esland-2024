@@ -34,7 +34,7 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
             );
             const data = await response.json();
             setPageInfo(data);
-            const votes = localStorage.getItem("votes");
+            const votes = localStorage.getItem("votesEsland");
 
             if (votes) {
                 setVotes(JSON.parse(votes));
@@ -45,19 +45,45 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
 
     useEffect(() => {
         async function fetchVotes() {
-            const response = await fetch("/api/getVotes");
-            const data = await response.json();
+            // const response = await fetch("/api/getVotes");
+            // const data = await response.json();
 
-            let newData = [];
-            for (let i = 0; i < data.rows.length; i = i + MAX_VOTES_CATEGORY) {
-                const arr = data.rows.slice(i, i + MAX_VOTES_CATEGORY);
-                newData.push(arr.map((elem: typeVote) => elem[3]));
-            }
+
+            // let newData = [
+            //     ["1-2","1-3","1-4","1-5"],
+            //     ["2-1","2-2","2-3","2-4"],
+            //     ["3-2","3-3","3-4","3-5"],
+            //     ["4-2","4-3","4-4","4-5"],
+            //     ["5-2","5-3","5-4","5-5"],
+            //     ["6-2","6-3","6-4","6-5"],
+            //     ["7-2","7-3","7-4","7-5"],
+            //     ["8-2","8-3","8-4","8-5"],
+            //     ["9-2","9-3","9-4","9-5"],
+            //     ["10-2","10-3","10-4","10-5"],
+            //     ["11-2","11-3","11-4","11-5"],
+            //     ["12-2","12-3","12-4","12-1"]
+            // ];
+            // for (let i = 0; i < data.rows.length; i = i + MAX_VOTES_CATEGORY) {
+            //     const arr = data.rows.slice(i, i + MAX_VOTES_CATEGORY);
+            //     newData.push(arr.map((elem: typeVote) => elem[3]));
+            // }
+            // localStorage.setItem("votesEsland", JSON.stringify(newData));
+            const newData = JSON.parse(localStorage.getItem("votesEsland"));
+            console.log(JSON.stringify(newData));
             setVotes(newData);
-            localStorage.setItem("votes", JSON.stringify(newData));
+            // console.log(newData);
+            
         }
         fetchVotes();
     }, []);
+
+    useEffect(() => {
+        console.log('Effect update VOTES');
+        if(votes[0].length !== 0) {
+            const updVotos = JSON.stringify(votes)
+            localStorage.setItem("votesEsland", updVotos);
+        }        
+    }, [votes]);
 
     const handleNavigation = (categoryIndex: number) => {
         if (categoryIndex < 0) categoryIndex = MAX_CATEGORY - 1;
@@ -70,14 +96,8 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
         setCategory(prevCategory);
     };
 
-    const handleVote = ({
-        categoryName,
-        candidato,
-    }: {
-        categoryName: number;
-        candidato: string;
-    }) => {
-        const votesCategory = votes[categoryName];
+    const handleVote = ({ categoryName, candidato } : { categoryName: number; candidato: string; }) => {         
+        const votesCategory = votes[categoryName];        
 
         // Comprobrar si ha votado, si es así entonces remover el candidato
         if (votesCategory.includes(candidato)) {
@@ -100,10 +120,11 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
             );
             return;
         }
-        // Agregar un voto
+
+        // Agregar un voto        
         setVotes((prevVotes) =>
             prevVotes.with(categoryName, [...votesCategory, candidato])
-        );
+        );        
     };
 
     const { categoryName = "", candidates: candidatesPerPage } = pageInfo ?? {};
