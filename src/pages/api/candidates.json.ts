@@ -1,7 +1,6 @@
 import voteInfo from "@/data/editions-vote.json";
 import type { APIRoute } from "astro";
-
-const DEFAULT_CATEGORY_PARAM = "1";
+import { DEFAULT_CATEGORY_PARAM } from "@/const/const";
 
 export const GET: APIRoute = ({ params, request }) => {
     // Recuperamos la URL

@@ -1,103 +1,21 @@
-import { useEffect, useState } from "preact/hooks";
-import { type CandidateType, type editionsVoteType, type typeVote } from "@/types/types";
+import { useVoteSystem } from "@/hooks/useVoteSystem";
+import candidatesByCategory from "@/data/editions-vote.json";
 import { MAX_CATEGORY, MAX_VOTES_CATEGORY } from "@/const/const";
 import { VoteFinal } from "./VoteFinal";
-import candidatesByCategory from "@/data/editions-vote.json";
+import { type editionsVoteType } from "@/types/types";
 
-interface pageInfo {
-    categoryName: string;
-    candidates: Array<CandidateType>;
-}
 interface Props {
     nameSession: string;
     imageSession: string;
 }
 
-type typeVotes = Array<Array<string>>;
-
 const { signOut } = await import("auth-astro/client");
 
 export function VoteSystem({ nameSession, imageSession }: Props) {
-    const [pageInfo, setPageInfo] = useState<pageInfo>();
-    const [category, setCategory] = useState(0);
-    // Nos crea el estado que será un array con una logitud MAX_CATEGORY y donde cada elemento es un array vacío
-    // La categoria define la posición del array y cada posición puede tener hasta 4 candidatos
-    // [[candidatos], [candidatos]]
-    const [votes, setVotes] = useState<typeVotes>(
-        Array.from({ length: MAX_CATEGORY }, () => [])
-    );
+    const { votes, setVotes, pageInfo, category, setCategory, handlePagesNavigation } = useVoteSystem();
 
-    useEffect(() => {
-        async function fetchCandidates() {
-            const response = await fetch(
-                `/api/candidates.json?category=${category}`
-            );
-            const data = await response.json();
-            setPageInfo(data);
-            const votes = localStorage.getItem("votesEsland");
-
-            if (votes) {
-                setVotes(JSON.parse(votes));
-            }
-        }
-        fetchCandidates();
-    }, [category]);
-
-    useEffect(() => {
-        async function fetchVotes() {
-            // const response = await fetch("/api/getVotes");
-            // const data = await response.json();
-
-
-            // let newData = [
-            //     ["1-2","1-3","1-4","1-5"],
-            //     ["2-1","2-2","2-3","2-4"],
-            //     ["3-2","3-3","3-4","3-5"],
-            //     ["4-2","4-3","4-4","4-5"],
-            //     ["5-2","5-3","5-4","5-5"],
-            //     ["6-2","6-3","6-4","6-5"],
-            //     ["7-2","7-3","7-4","7-5"],
-            //     ["8-2","8-3","8-4","8-5"],
-            //     ["9-2","9-3","9-4","9-5"],
-            //     ["10-2","10-3","10-4","10-5"],
-            //     ["11-2","11-3","11-4","11-5"],
-            //     ["12-2","12-3","12-4","12-1"]
-            // ];
-            // for (let i = 0; i < data.rows.length; i = i + MAX_VOTES_CATEGORY) {
-            //     const arr = data.rows.slice(i, i + MAX_VOTES_CATEGORY);
-            //     newData.push(arr.map((elem: typeVote) => elem[3]));
-            // }
-            // localStorage.setItem("votesEsland", JSON.stringify(newData));
-            const newData = JSON.parse(localStorage.getItem("votesEsland"));
-            console.log(JSON.stringify(newData));
-            setVotes(newData);
-            // console.log(newData);
-            
-        }
-        fetchVotes();
-    }, []);
-
-    useEffect(() => {
-        console.log('Effect update VOTES');
-        if(votes[0].length !== 0) {
-            const updVotos = JSON.stringify(votes)
-            localStorage.setItem("votesEsland", updVotos);
-        }        
-    }, [votes]);
-
-    const handleNavigation = (categoryIndex: number) => {
-        if (categoryIndex < 0) categoryIndex = MAX_CATEGORY - 1;
-        else if (categoryIndex > MAX_CATEGORY - 1) categoryIndex = 0;
-        setCategory(categoryIndex);
-    };
-
-    const setPrevCategory = () => {
-        const prevCategory = category > 0 ? category - 1 : MAX_CATEGORY - 1;
-        setCategory(prevCategory);
-    };
-
-    const handleVote = ({ categoryName, candidato } : { categoryName: number; candidato: string; }) => {         
-        const votesCategory = votes[categoryName];        
+    const handleVote = ({ categoryName, candidato } : { categoryName: number; candidato: string; }) => {
+        const votesCategory = votes[categoryName];
 
         // Comprobrar si ha votado, si es así entonces remover el candidato
         if (votesCategory.includes(candidato)) {
@@ -107,9 +25,6 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
             setVotes((prevVotes) => prevVotes.with(categoryName, newVotes));
             return;
         }
-        // Comprobar si ha votado en esta categoería 4 veces entonces no le permite agregar un nuevo candidato
-        // if (votesCategory.length >= 4) return;
-
         // Comprobar si ha votado en esta categoería 4 veces, si selecciona un 5to candidato, elimina el primero seleccionado y agrega el último al final
         if (votesCategory.length >= 4) {
             setVotes((prevVotes) =>
@@ -120,8 +35,7 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
             );
             return;
         }
-
-        // Agregar un voto        
+        // Agregar un voto
         setVotes((prevVotes) =>
             prevVotes.with(categoryName, [...votesCategory, candidato])
         );        
@@ -227,7 +141,7 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
                 </div>
                 <div>
                     <button
-                        onClick={() => handleNavigation(category - 1)}
+                        onClick={() => handlePagesNavigation(category - 1)}
                         class="p-2 border rounded"
                     >
                         <Arrow rotate />
@@ -239,7 +153,7 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
                         </span>
                     </span>
                     <button
-                        onClick={() => handleNavigation(category + 1)}
+                        onClick={() => handlePagesNavigation(category + 1)}
                         class="p-2 border rounded"
                     >
                         <Arrow />
