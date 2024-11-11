@@ -1,13 +1,13 @@
 import { useEffect, useState } from "preact/hooks";
-import { type CandidateType, type editionsVoteType } from "@/types/types";
+import { type CandidateType, type editionsVoteType, type typeVote } from "@/types/types";
+import { MAX_CATEGORY, MAX_VOTES_CATEGORY } from "@/const/const";
 import { VoteFinal } from "./VoteFinal";
-import candidatesByCategory from "@/data/editions-vote.json"
+import candidatesByCategory from "@/data/editions-vote.json";
 
 interface pageInfo {
     categoryName: string;
     candidates: Array<CandidateType>;
 }
-
 interface Props {
     nameSession: string;
     imageSession: string;
@@ -17,16 +17,15 @@ type typeVotes = Array<Array<string>>;
 
 const { signOut } = await import("auth-astro/client");
 
-const MAX_CATEGORY = 12;
-const MAX_VOTES_CATEGORY = 4;
-
 export function VoteSystem({ nameSession, imageSession }: Props) {
     const [pageInfo, setPageInfo] = useState<pageInfo>();
     const [category, setCategory] = useState(0);
     // Nos crea el estado que será un array con una logitud MAX_CATEGORY y donde cada elemento es un array vacío
     // La categoria define la posición del array y cada posición puede tener hasta 4 candidatos
     // [[candidatos], [candidatos]]
-    const [votes, setVotes] = useState<typeVotes>(Array.from({ length: MAX_CATEGORY }, () => []));
+    const [votes, setVotes] = useState<typeVotes>(
+        Array.from({ length: MAX_CATEGORY }, () => [])
+    );
 
     useEffect(() => {
         async function fetchCandidates() {
@@ -35,13 +34,30 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
             );
             const data = await response.json();
             setPageInfo(data);
+            const votes = localStorage.getItem("votes");
+
+            if (votes) {
+                setVotes(JSON.parse(votes));
+            }
         }
         fetchCandidates();
-        // TODO: Delete fake data
-        const votesEsland = localStorage.getItem("votesEsland");
-        // votesEsland && console.log(JSON.parse(votesEsland));
-        votesEsland && setVotes(JSON.parse(votesEsland));
     }, [category]);
+
+    useEffect(() => {
+        async function fetchVotes() {
+            const response = await fetch("/api/getVotes");
+            const data = await response.json();
+
+            let newData = [];
+            for (let i = 0; i < data.rows.length; i = i + MAX_VOTES_CATEGORY) {
+                const arr = data.rows.slice(i, i + MAX_VOTES_CATEGORY);
+                newData.push(arr.map((elem: typeVote) => elem[3]));
+            }
+            setVotes(newData);
+            localStorage.setItem("votes", JSON.stringify(newData));
+        }
+        fetchVotes();
+    }, []);
 
     const handleNavigation = (categoryIndex: number) => {
         if (categoryIndex < 0) categoryIndex = MAX_CATEGORY - 1;
@@ -50,11 +66,17 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
     };
 
     const setPrevCategory = () => {
-        const prevCategory = category > 0 ? (category - 1) : (MAX_CATEGORY - 1);
+        const prevCategory = category > 0 ? category - 1 : MAX_CATEGORY - 1;
         setCategory(prevCategory);
     };
 
-    const handleVote = ({ categoryName, candidato }: { categoryName: number; candidato: string; }) => {
+    const handleVote = ({
+        categoryName,
+        candidato,
+    }: {
+        categoryName: number;
+        candidato: string;
+    }) => {
         const votesCategory = votes[categoryName];
 
         // Comprobrar si ha votado, si es así entonces remover el candidato
@@ -81,7 +103,7 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
         // Agregar un voto
         setVotes((prevVotes) =>
             prevVotes.with(categoryName, [...votesCategory, candidato])
-        );        
+        );
     };
 
     const { categoryName = "", candidates: candidatesPerPage } = pageInfo ?? {};
@@ -89,75 +111,82 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
 
     // TODO
     if (category == MAX_CATEGORY - 1) {
-        if(!candidatesPerPage || !votes) return;
+        if (!candidatesPerPage || !votes) return;
         return (
-            <VoteFinal 
+            <VoteFinal
                 editionsVote={candidatesByCategory as Array<editionsVoteType>}
                 votes={votes}
                 setCategory={setCategory}
-                categoryNames={candidatesByCategory.map(({ categoryName }) => categoryName)}
-                categoryId={candidatesByCategory.map(({ id }) => id)}>
-            </VoteFinal>
-        )
+                categoryNames={candidatesByCategory.map(
+                    ({ categoryName }) => categoryName
+                )}
+                categoryId={candidatesByCategory.map(({ id }) => id)}
+            ></VoteFinal>
+        );
     }
 
     return (
         <div class="relative w-full max-w-7xl h-screen mx-auto flex flex-col justify-center items-center">
             <CategorySystem>{categoryName}</CategorySystem>
             <div class="text-center text-xl font-bold mb-4">
-                Votos realizados: {votesCategory.length}/
-                {MAX_VOTES_CATEGORY}
+                Votos realizados: {votesCategory.length}/{MAX_VOTES_CATEGORY}
             </div>
             <ul class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-10">
                 {candidatesPerPage?.map((candidato, i) => {
-                    const { name, image, link, id } = candidato;                    
-                    const voteIndex = votesCategory.indexOf(id)                    
+                    const { name, image, link, id } = candidato;
+                    const voteIndex = votesCategory.indexOf(id);
                     const isVoted = voteIndex >= 0;
 
                     return (
                         <li
-                            class={
-                                    `${isVoted ? "bg-yellow-500" : "bg-blue-900"}
-                                    group relative text-center rounded-lg hover:bg-sky-400 transition-colors overflow-hidden`
-                                }
+                            class={`${isVoted ? "bg-yellow-500" : "bg-blue-900"}
+                                    group relative text-center rounded-lg hover:bg-sky-400 transition-colors overflow-hidden`}
                         >
-                            {
-                                candidato.link && (
-                                    <a href={candidato.link}  target="_blank"
-                                        class="
+                            {candidato.link && (
+                                <a
+                                    href={candidato.link}
+                                    target="_blank"
+                                    class="
                                             absolute top-2 right-2 inline-flex w-8 h-8 justify-center items-center border
-                                            bg-white text-black rounded-full hover:bg-black hover:text-white z-10">
-                                        <svg
-                                            width="16"
-                                            height="16"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke="currentColor"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M17.3213 14.501c-.3204-.1755-.5195-.5117-.5195-.877v-3.2467c0-.3653.1991-.70155.5195-.87706l3.6075-1.9761c.6664-.36506 1.4804.11718 1.4804.87703v7.19893c0 .7598-.814 1.2421-1.4804.877l-3.6075-1.9761ZM8.43066 8.53223h4.12974v4.12967M5.91504 15.1943 12.438 8.67136"
-                                            ></path>
-                                            <path
-                                                stroke="currentColor"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M3.59082 19.499c-1.10457 0-2-.8954-2-2V6.50193c0-1.10457.89543-2 2-2H14.8013c1.1045 0 2 .89543 2 2V17.499c0 1.1046-.8955 2-2 2H3.59082Z"
-                                            ></path>
-                                        </svg>
-                                    </a>
-                                )
-                            }
+                                            bg-white text-black rounded-full hover:bg-black hover:text-white z-10"
+                                >
+                                    <svg
+                                        width="16"
+                                        height="16"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke="currentColor"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M17.3213 14.501c-.3204-.1755-.5195-.5117-.5195-.877v-3.2467c0-.3653.1991-.70155.5195-.87706l3.6075-1.9761c.6664-.36506 1.4804.11718 1.4804.87703v7.19893c0 .7598-.814 1.2421-1.4804.877l-3.6075-1.9761ZM8.43066 8.53223h4.12974v4.12967M5.91504 15.1943 12.438 8.67136"
+                                        ></path>
+                                        <path
+                                            stroke="currentColor"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M3.59082 19.499c-1.10457 0-2-.8954-2-2V6.50193c0-1.10457.89543-2 2-2H14.8013c1.1045 0 2 .89543 2 2V17.499c0 1.1046-.8955 2-2 2H3.59082Z"
+                                        ></path>
+                                    </svg>
+                                </a>
+                            )}
                             <button
-                                onClick={() => handleVote({categoryName: category, candidato: id,})}
+                                onClick={() =>
+                                    handleVote({
+                                        categoryName: category,
+                                        candidato: id,
+                                    })
+                                }
                             >
                                 <img
                                     class="rounded-t-lg group-hover:scale-110 transition-transform"
                                     src={`/images/voting-assets/${candidato.image}`}
                                     alt={candidato.name}
                                 />
-                                <p class="font-bold capitalize my-2">{candidato.name}</p>
+                                <p class="font-bold capitalize my-2">
+                                    {candidato.name}
+                                </p>
                             </button>
                         </li>
                     );
@@ -165,25 +194,36 @@ export function VoteSystem({ nameSession, imageSession }: Props) {
             </ul>
             <footer class="w-full p-2 flex justify-between items-center rounded bg-black/50">
                 <div class="flex items-center gap-2">
-                    <img src={imageSession} alt={nameSession} class="w-10 h-10 rounded-full" />
+                    <img
+                        src={imageSession}
+                        alt={nameSession}
+                        class="w-10 h-10 rounded-full"
+                    />
                     <div>
                         <span class="block">{nameSession}</span>
                         <button onClick={() => signOut()}>Cerrar sesion</button>
                     </div>
                 </div>
                 <div>
-                    <button onClick={() => handleNavigation(category - 1)} class="p-2 border rounded">
+                    <button
+                        onClick={() => handleNavigation(category - 1)}
+                        class="p-2 border rounded"
+                    >
                         <Arrow rotate />
                     </button>
                     <span class="mx-4 font-bold text-xl">
-                        Categoría 
-                        <span class="ml-4 text-2xl">{category + 1} / {MAX_CATEGORY}</span>
+                        Categoría
+                        <span class="ml-4 text-2xl">
+                            {category + 1} / {MAX_CATEGORY}
+                        </span>
                     </span>
-                    <button onClick={() => handleNavigation(category + 1)} class="p-2 border rounded">
+                    <button
+                        onClick={() => handleNavigation(category + 1)}
+                        class="p-2 border rounded"
+                    >
                         <Arrow />
                     </button>
                 </div>
-                
             </footer>
         </div>
     );

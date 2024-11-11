@@ -8,9 +8,11 @@ export type CandidateType = {
     name: string;
     image: string;
     link?: string;
-}
+};
 export type editionsVoteType = {
     categoryName: string;
     candidates: Array<CandidateType>;
     id: string;
-}
+};
+
+export type typeVote = [number, string, string, string, number];
