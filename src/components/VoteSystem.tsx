@@ -42,7 +42,7 @@ export function VoteSystem({ nameSession, imageSession, i18n }: Props) {
         // Agregar un voto
         setVotes((prevVotes) =>
             prevVotes.with(categoryName, [...votesCategory, candidato])
-        );        
+        );
     };
 
     const { categoryName = "", candidates: candidatesPerPage } = pageInfo ?? {};

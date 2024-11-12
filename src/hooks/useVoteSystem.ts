@@ -1,5 +1,5 @@
 import { useState, useEffect } from "preact/hooks";
-import { MAX_CATEGORY, MAX_VOTES_CATEGORY } from "@/const/const";
+import { MAX_CATEGORY, MAX_VOTES_CATEGORY, DATAEMPTY } from "@/const/const";
 import type { typeVotesInLocal, pageInfo } from "@/types/types";
 type typeVotes = Array<Array<string>>;
 
@@ -35,19 +35,26 @@ export const useVoteSystem = () => {
         async function fetchVotes() {
             const response = await fetch("/api/getVotes");
             const dataFromDB = await response.json();
+            
             let dataProcessed = [];
             for (let i = 0; i < dataFromDB.rows.length; i = i + MAX_VOTES_CATEGORY) {
                 const arr = dataFromDB.rows.slice(i, i + MAX_VOTES_CATEGORY);
                 dataProcessed.push(arr.map((elem: typeVotes) => elem[3]));
             }
-            localStorage.setItem("votesEsland", JSON.stringify(dataProcessed));
-            setVotes(dataProcessed);
+
+            if(dataProcessed.length === 0) {
+                setVotes(DATAEMPTY);
+                localStorage.setItem("votesEsland", JSON.stringify(DATAEMPTY));
+            } else {
+                setVotes(dataProcessed);
+                localStorage.setItem("votesEsland", JSON.stringify(dataProcessed));
+            }
         }
         fetchVotes();
     }, []);
 
     // Update votes in localStorage
-    useEffect(() => {
+    useEffect(() => {        
         if(votes[0].length !== 0) {
             const updVotos = JSON.stringify(votes)
             localStorage.setItem("votesEsland", updVotos);
