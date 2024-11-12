@@ -1,5 +1,8 @@
 import { ui, defaultLang, routes } from "./ui";
 import type { LanguageKeyUi, RouteKeyUi } from "@/types/types";
+import type { Routes } from "@/i18n/ui";
+type Language = keyof Routes;
+type RouteKey<T extends Language> = keyof Routes[T];
 
 export function getLangFromUrl(url: URL) {
     const [, lang] = url.pathname.split("/");
@@ -24,10 +27,8 @@ export function getRouteOfLanguage(lang: LanguageKeyUi, route: RouteKeyUi) {
 export function translateRoute(
     key: LanguageKeyUi,
     idiom: LanguageKeyUi,
-    route
+    route: RouteKey<Language>
 ) {
-    console.log(key, idiom, route);
-
     const r = routes[idiom][route];
     if (key == "es") {
         const href = `/${ui[key][r]}`;

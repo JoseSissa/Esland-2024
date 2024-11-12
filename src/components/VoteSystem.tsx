@@ -2,7 +2,7 @@ import { useVoteSystem } from "@/hooks/useVoteSystem";
 import candidatesByCategory from "@/data/editions-vote.json";
 import { MAX_CATEGORY, MAX_VOTES_CATEGORY } from "@/const/const";
 import { VoteFinal } from "./VoteFinal";
-import { type editionsVoteType } from "@/types/types";
+import type { editionsVoteType } from "@/types/types";
 import { CameraLink } from "./CameraLink";
 import { UserSessionControl } from "./UserSessionControl.jsx";
 
@@ -47,9 +47,8 @@ export function VoteSystem({ nameSession, imageSession, i18n }: Props) {
 
     const { categoryName = "", candidates: candidatesPerPage } = pageInfo ?? {};
     const votesCategory = votes[category];
-
-    // TODO
-    if (category == MAX_CATEGORY - 1) {
+    
+    if (category == MAX_CATEGORY) {
         if (!candidatesPerPage || !votes) return;
         return (
             <VoteFinal

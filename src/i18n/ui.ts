@@ -83,5 +83,7 @@ export const routes = {
     },
 } as const;
 
+export type Routes = typeof routes;
+
 export const showDefaultLang = false;
 export const defaultLang = "es";

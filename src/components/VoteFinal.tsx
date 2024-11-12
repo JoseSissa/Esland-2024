@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "preact/hooks";
-import { type CandidateType, type editionsVoteType } from "@/types/types";
+import type { CandidateType, editionsVoteType } from "@/types/types";
 // import confetti from "canvas-confetti";
-import { type default as CandidatesType } from "@/data/editions-vote.json"
 type typeVotes = Array<Array<string>>;
 
 const RESULT_STATUS = {
@@ -18,9 +17,7 @@ export const VoteFinal = (
 
     useEffect(() => {
         // scroll to top with smooth scroll
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        console.log(votes);
-        
+        window.scrollTo({ top: 0, behavior: "smooth" });        
     }, []);
 
     const selectedCandidates = useMemo(() => {
@@ -89,29 +86,31 @@ export const VoteFinal = (
                         {votes.map((categoryVotes, index) => {
                             return (
                                 <button
-                                    class="group bg-[#1682c7] hover:bg-yellow-500 flex flex-col justify-between items-center rounded-lg overflow-hidden"
+                                    class="group relative flex flex-col justify-between items-center rounded-lg overflow-hidden bg-[#1682c7] hover:bg-yellow-500"
                                     onClick={() => setCategory(index)}
                                 >
-                                    <ul class="grid grid-cols-2 group-hover:hover:scale-105 transition-transform">
-                                        {categoryVotes.map((candidate) => {
-                                            const info = selectedCandidates?.[candidate];
-                                            const image = info?.image ?? "";
-                                            const name = info?.name ?? "";
+                                    <div class="overflow-hidden">
+                                        <ul class="grid grid-cols-2 group-hover:hover:scale-105 transition-transform">
+                                            {categoryVotes.map((candidate) => {
+                                                const info = selectedCandidates?.[candidate];
+                                                const image = info?.image ?? "";
+                                                const name = info?.name ?? "";
 
-                                            return (
-                                                <li>
-                                                    <img
-                                                        class="aspect-video w-full"
-                                                        src={`/images/voting-assets/${image}`}
-                                                        alt={name}
-                                                    />
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
-                                    <h2 class="text-base font-semibold text-center my-auto text-balance capitalize">
+                                                return (
+                                                    <li>
+                                                        <img
+                                                            class="aspect-video w-full"
+                                                            src={`/images/voting-assets/${image}`}
+                                                            alt={name}
+                                                        />
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </div>
+                                    <h3 class="flex items-center justify-center w-full h-14 px-2 overflow-hidden text-base font-semibold capitalize">
                                         {categoryNames[index]}
-                                    </h2>
+                                    </h3>
                                 </button>
                             );
                         })}

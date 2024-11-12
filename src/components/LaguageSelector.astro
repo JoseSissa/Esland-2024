@@ -2,6 +2,9 @@
 import { ui, languages } from "@/i18n/ui";
 import { getLangFromUrl, translateRoute } from "@/i18n/utils";
 import type { LanguageKeyUi, LanguageKeyRoutes } from "@/types/types";
+import type { Routes } from "@/i18n/ui";
+type Language = keyof Routes;
+type RouteKey<T extends Language> = keyof Routes[T];
 
 interface Props {
     class?: string;
@@ -19,8 +22,7 @@ if (pathname.split("/").length === 3) {
     [, route] = pathname.split("/");
 }
 
-const getHref = (key: LanguageKeyUi) =>
-    route ? translateRoute(key, lang, route) : ui[key]["nav.inicio"];
+const getHref = (key: LanguageKeyUi) => route ? translateRoute(key, lang, route as RouteKey<Language>) : ui[key]["nav.inicio"];    
 
 const { class: className } = Astro.props;
 ---
