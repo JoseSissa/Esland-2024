@@ -1,39 +1,49 @@
 ---
-import 'photoswipe/style.css';
-import Button from './Button.astro';
-import photoInfo from '@/data/photos-gallery.json'
+import "photoswipe/style.css";
+import Button from "./Button.astro";
+import photoInfo from "@/data/photos-gallery.json";
 
-const offset = 10
-const edition = Number(0)
-const photos = photoInfo[edition].slice(0, offset)
-
+const offset = 10;
+const edition = Number(0);
+const photos = photoInfo[edition].slice(0, offset);
 
 // Internacionalización
-import { geti18n } from '@/i18n';
-const { currentLocale } = Astro
-const i18n = geti18n({ currentLocale })
+import { geti18n } from "@/i18n";
+const { currentLocale } = Astro;
+const i18n = geti18n({ currentLocale });
 ---
 
 <section class="w-full max-w-[1400px] mx-auto px-8 lg:px-20">
-    <h2 class="mb-4 text-center text-3xl lg:text-6xl font-semibold tracking-wide">
+    <h2
+        class="mb-4 text-center text-3xl lg:text-6xl font-semibold tracking-wide"
+    >
         {i18n.GALLERY.TITLE}
     </h2>
     <p class="text-center text-xl lg:text-2xl">
         {i18n.GALLERY.TEXT}
     </p>
-    <masonry-layout id="gallery" gap="20" maxcolwidth="600" class="py-10 lg:py-20">
+    <masonry-layout
+        id="gallery"
+        gap="20"
+        maxcolwidth="600"
+        class="py-10 lg:py-20"
+    >
         {
             photos.map(({ height, width }, i) => {
                 return (
                     <a
-                    href={`/images/gallery/Velada/img-${i+1}.webp`}
-                    target="_blank" 
-                    data-pswp-width={width}
-                    data-pswp-height={height}
+                        href={`/images/gallery/Velada/img-${i + 1}.webp`}
+                        target="_blank"
+                        data-pswp-width={width}
+                        data-pswp-height={height}
                     >
-                        <img src={`/images/gallery/Velada-thumbnail/img-${i+1}.webp`} alt={i18n.GALLERY.ALT} loading="lazy"></img>
+                        <img
+                            src={`/images/gallery/Velada-thumbnail/img-${i + 1}.webp`}
+                            alt={i18n.GALLERY.ALT}
+                            loading="lazy"
+                        />
                     </a>
-                )
+                );
             })
         }
     </masonry-layout>
@@ -45,51 +55,60 @@ const i18n = geti18n({ currentLocale })
 </section>
 
 <script>
-    import PhotoSwipeLightbox from 'photoswipe/lightbox';
-    import photoInfo from '@/data/photos-gallery.json'
-    import "@appnest/masonry-layout"
+    import PhotoSwipeLightbox from "photoswipe/lightbox";
+    import photoInfo from "@/data/photos-gallery.json";
+    import "@appnest/masonry-layout";
 
     // Internacionalización
-    import { geti18n } from '@/i18n';
-    const { currentLocale } = Astro
-    const i18n = geti18n({ currentLocale })
+    import { geti18n } from "@/i18n";
+    const { currentLocale } = Astro;
+    const i18n = geti18n({ currentLocale });
 
-    const buttonMorePhotos = document.getElementById('loadMore')
-    const gallery = document.getElementById('gallery')
+    const buttonMorePhotos = document.getElementById("loadMore");
+    const gallery = document.getElementById("gallery");
 
     const lightbox = new PhotoSwipeLightbox({
-        gallery: '#gallery',
-        children: 'a',
-        showHideAnimationType: 'zoom',
-        pswpModule: () => import('photoswipe')
+        gallery: "#gallery",
+        children: "a",
+        showHideAnimationType: "zoom",
+        pswpModule: () => import("photoswipe"),
     });
     lightbox.init();
 
-    buttonMorePhotos?.addEventListener('click', (e) => {
-        e.preventDefault()
-        const fragment = document.createDocumentFragment()
-        const numPhotos = 
-            gallery?.children.length != undefined ? gallery?.children.length : 0
-        const until = 
-            (numPhotos + 10) > photoInfo[0].length ? photoInfo[0].length : numPhotos + 10
+    buttonMorePhotos?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const fragment = document.createDocumentFragment();
+        const numPhotos =
+            gallery?.children.length != undefined
+                ? gallery?.children.length
+                : 0;
+        const until =
+            numPhotos + 10 > photoInfo[0].length
+                ? photoInfo[0].length
+                : numPhotos + 10;
 
         for (let i = numPhotos; i < until; i++) {
-            const a = document.createElement('a');
+            const a = document.createElement("a");
             a.href = `/images/gallery/Velada/img-${i + 1}.webp`;
-            a.target = '_blank';
-            a.setAttribute('data-pswp-width', photoInfo[0][i].width.toString());
-            a.setAttribute('data-pswp-height', photoInfo[0][i].height.toString());
+            a.target = "_blank";
+            a.setAttribute("data-pswp-width", photoInfo[0][i].width.toString());
+            a.setAttribute(
+                "data-pswp-height",
+                photoInfo[0][i].height.toString()
+            );
 
-            const img = document.createElement('img');
+            const img = document.createElement("img");
             img.src = `/images/gallery/Velada-thumbnail/img-${i + 1}.webp`;
             img.alt = `${i18n.GALLERY.ALT}`;
             img.loading = "lazy";
 
             a.appendChild(img);
-            fragment.appendChild(a)
+            fragment.appendChild(a);
         }
-        gallery?.appendChild(fragment)
+        gallery?.appendChild(fragment);
         document.querySelector("masonry-layout")?.scheduleLayout();
-        until === photoInfo[0].length ? buttonMorePhotos.classList.add('hidden') : ''
-    })
+        until === photoInfo[0].length
+            ? buttonMorePhotos.classList.add("hidden")
+            : "";
+    });
 </script>
