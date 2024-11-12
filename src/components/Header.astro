@@ -47,7 +47,7 @@ const t = useTranslations(lang);
                     <a
                         class:list={[
                             "inline-block px-1 md:text-base lg:text-xl text__glowing uppercase",
-                            path === "/info" && "border-b",
+                            path.includes(getRouteOfLanguage(lang, "nav.info")) && "border-b",
                         ]}
                         href={getRouteOfLanguage(lang, "nav.info")}
                         >{t("nav.info")}</a
@@ -57,7 +57,7 @@ const t = useTranslations(lang);
                     <a
                         class:list={[
                             "inline-block px-1 md:text-base lg:text-xl text__glowing uppercase",
-                            path === "/archivo" && "border-b",
+                            path.includes(getRouteOfLanguage(lang, "nav.archivo")) && "border-b",
                         ]}
                         href={getRouteOfLanguage(lang, "nav.archivo")}
                         >{t("nav.archivo")}</a
@@ -67,7 +67,7 @@ const t = useTranslations(lang);
                     <a
                         class:list={[
                             "inline-block px-1 md:text-base lg:text-xl text__glowing uppercase",
-                            path === "/vota" && "border-b",
+                            path.includes(getRouteOfLanguage(lang, "nav.vota")) && "border-b",
                         ]}
                         href={getRouteOfLanguage(lang, "nav.vota")}
                         >{t("nav.vota")}</a
