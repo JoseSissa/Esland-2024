@@ -1,10 +1,18 @@
 ---
 import Logo from "./icons/Logo.astro";
+import {
+    getLangFromUrl,
+    useTranslations,
+    getRouteOfLanguage,
+} from "@/i18n/utils";
 
 // Internacionalización
 import { geti18n } from "@/i18n";
 const { currentLocale } = Astro;
 const i18n = geti18n({ currentLocale });
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <footer class="bg-black/40">
@@ -89,21 +97,24 @@ const i18n = geti18n({ currentLocale });
                     <ul class="font-medium">
                         <li class="mb-4">
                             <a
-                                href="https://flowbite.com/"
+                                href={getRouteOfLanguage(lang, "nav.legal")}
                                 class="hover:underline"
                                 >{i18n.FOOTER.LEGAL.NOTICE}</a
                             >
                         </li>
                         <li class="mb-4">
                             <a
-                                href="https://tailwindcss.com/"
+                                href={getRouteOfLanguage(
+                                    lang,
+                                    "nav.privacidad"
+                                )}
                                 class="hover:underline"
                                 >{i18n.FOOTER.LEGAL.PRIVACY}</a
                             >
                         </li>
                         <li>
                             <a
-                                href="https://tailwindcss.com/"
+                                href={getRouteOfLanguage(lang, "nav.cookies")}
                                 class="hover:underline"
                                 >{i18n.FOOTER.LEGAL.COOKIES}</a
                             >
