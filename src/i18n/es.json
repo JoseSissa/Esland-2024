@@ -402,5 +402,6 @@
 	"ERROR_404": {
 		"TITLE": "Página no encontrada",
 		"BACK_HOMEPAGE_BTN": "Volver a la página de inicio"
-	}
+	},
+	"LAST_MESSAGE": "Este proyecto se realizó con fines educativos, no es la web oficial."
 }

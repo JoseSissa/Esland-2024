@@ -14,8 +14,8 @@
 		"LEGAL_NOTICE_DESCRIPTION": "The legal notice establishes the legal provisions and responsibilities related to the ESLAND Awards, addressing aspects such as terms of use, legal responsibilities, and agreements between the user and the responsible entity.",
 		"PRIVACY_POLICY_TITLE": "Privacy Policy - ESLAND Awards",
 		"PRIVACY_POLICY_DESCRIPTION": "The Privacy Policy of the ESLAND Awards describes how personal data of users is collected, used, protected, and shared.",
-		"COOKIES_TITLE":"Cookie Policy - ESLAND Awards",
-		"COOKIES_DESCRIPTION":"The Cookie Policy of the ESLAND Awards informs about the use of cookies and similar technologies on the website.",
+		"COOKIES_TITLE": "Cookie Policy - ESLAND Awards",
+		"COOKIES_DESCRIPTION": "The Cookie Policy of the ESLAND Awards informs about the use of cookies and similar technologies on the website.",
 		"ERROR_404_TITLE": "404 Page not found - ESLAND Awards",
 		"ERROR_404_DESCRIPTION": "Page not found (Error 404). Check the URL or explore our sections. Need help? Contact us."
 	},
@@ -299,7 +299,7 @@
 	},
 	"AWARDS": {
 		"TITLE": "AWARDS",
-		"NOT_FOUND" : "Edition not found"
+		"NOT_FOUND": "Edition not found"
 	},
 	"GALLERY": {
 		"TITLE": "GALLERY",
@@ -402,5 +402,6 @@
 	"ERROR_404": {
 		"TITLE": "Page not found",
 		"BACK_HOMEPAGE_BTN": "Back to homepage"
-	}
+	},
+	"LAST_MESSAGE": "This project was made for educational purposes, it is not the official website."
 }

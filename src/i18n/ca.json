@@ -14,8 +14,8 @@
 		"LEGAL_NOTICE_DESCRIPTION": "L'avís legal estableix les disposicions legals i les responsabilitats relacionades amb els Premis ESLAND, abordant aspectes com termes d'ús, responsabilitats legals i acords entre l'usuari i l'entitat responsable.",
 		"PRIVACY_POLICY_TITLE": "Política de Privacitat - Premis ESLAND",
 		"PRIVACY_POLICY_DESCRIPTION": "La política de privacitat dels Premis ESLAND descriu com es recullen, utilitzen, protegeixen i comparteixen les dades personals dels usuaris.",
-		"COOKIES_TITLE":"Política de Galetes - Premis ESLAND",
-		"COOKIES_DESCRIPTION":"La Política de Galetes dels Premis ESLAND informa sobre l'ús de galetes i tecnologies similars al lloc web.",
+		"COOKIES_TITLE": "Política de Galetes - Premis ESLAND",
+		"COOKIES_DESCRIPTION": "La Política de Galetes dels Premis ESLAND informa sobre l'ús de galetes i tecnologies similars al lloc web.",
 		"ERROR_404_TITLE": "404 Pàgina no trobada - Premis ESLAND",
 		"ERROR_404_DESCRIPTION": "Pàgina no trobada (Error 404). Verifica la URL o explora les nostres seccions. Necessites ajuda? Contacta'ns."
 	},
@@ -299,7 +299,7 @@
 	},
 	"AWARDS": {
 		"TITLE": "PALMARÈS",
-		"NOT_FOUND" : "Edició no trobada"
+		"NOT_FOUND": "Edició no trobada"
 	},
 	"GALLERY": {
 		"TITLE": "GALERIA",
@@ -397,10 +397,11 @@
 		},
 		"MODIFICATIONS": {
 			"LAST_UPDATE": "Data de la darrera actualització: 12 del 12 de 2023."
-		}		
+		}
 	},
 	"ERROR_404": {
 		"TITLE": "Pàgina no trobadaa",
 		"BACK_HOMEPAGE_BTN": "Tornar a la pàgina d'inici"
-	}
+	},
+	"LAST_MESSAGE": "Aquest projecte es va realitzar amb fines educatius, no és la web oficial."
 }
